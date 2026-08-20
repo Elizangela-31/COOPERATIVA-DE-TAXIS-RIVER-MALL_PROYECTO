@@ -1,0 +1,8 @@
+<div class="form-actions mt-4 pt-4 border-top d-flex flex-wrap gap-2">
+    <button class="btn btn-primary px-4" type="submit">
+        <i class="bi bi-check2-circle me-1"></i> {{ $texto ?? 'Guardar información' }}
+    </button>
+    <a class="btn btn-light px-4" href="{{ $rutaCancelar }}">
+        <i class="bi bi-arrow-left me-1"></i> Cancelar
+    </a>
+</div>

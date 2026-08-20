@@ -1,0 +1,4 @@
+<?php $__env->startSection('encabezado','Nuevo pago'); ?>
+<?php $__env->startSection('contenido'); ?><div class="card shadow-sm"><div class="card-body p-4"><h1 class="h4 mb-4">Registrar pago</h1><form method="POST" action="<?php echo e(route('pagos.store')); ?>"><?php echo csrf_field(); ?> <?php echo $__env->make('pagos._formulario', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?></form></div></div><?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('plantillas.principal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Xampp\htdocs\COOPERATIVA\resources\views/pagos/crear.blade.php ENDPATH**/ ?>

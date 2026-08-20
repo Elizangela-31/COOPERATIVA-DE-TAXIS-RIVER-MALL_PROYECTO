@@ -1,0 +1,10 @@
+@extends('plantillas.principal')
+@section('titulo','Conductores | River Mall') @section('encabezado','Gestión de conductores')
+@section('contenido')
+<div class="page-heading d-flex flex-wrap justify-content-between gap-3 mb-4"><div><h1 class="h3 mb-1">Conductores</h1><p class="mb-0">Personal autorizado para operar las unidades.</p></div><a class="btn btn-primary align-self-center" href="{{ route('conductores.create') }}"><i class="bi bi-plus-lg me-1"></i> Nuevo conductor</a></div>
+<div class="card"><div class="card-body p-4">@include('componentes.buscador',['placeholder'=>'Buscar por nombre, cédula o licencia','opcionesOrden'=>['created_at'=>'Más recientes','nombres'=>'Nombres','apellidos'=>'Apellidos','cedula'=>'Cédula','licencia'=>'Licencia','estado'=>'Estado']])
+<div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Conductor</th><th>Socio responsable</th><th>Cédula</th><th>Licencia</th><th>Teléfono</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead><tbody>
+@forelse($conductores as $conductor)<tr><td><strong>{{ $conductor->nombres }} {{ $conductor->apellidos }}</strong></td><td>{{ $conductor->socio?->nombres }} {{ $conductor->socio?->apellidos }}</td><td>{{ $conductor->cedula }}</td><td>{{ $conductor->licencia }}</td><td>{{ $conductor->telefono }}</td><td><span class="badge text-bg-{{ $conductor->estado==='Activo'?'success':'secondary' }}">{{ $conductor->estado }}</span></td><td class="text-end text-nowrap"><a class="btn btn-sm btn-light" href="{{ route('conductores.edit',$conductor) }}"><i class="bi bi-pencil-square"></i></a> <form class="d-inline" method="POST" action="{{ route('conductores.destroy',$conductor) }}" data-confirmar-eliminar>@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash3"></i></button></form></td></tr>
+@empty<tr><td colspan="7" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-2 d-block mb-2"></i>No existen conductores registrados.</td></tr>@endforelse
+</tbody></table></div><div class="d-flex justify-content-end">{{ $conductores->links() }}</div></div></div>
+@endsection

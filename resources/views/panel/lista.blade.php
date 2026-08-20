@@ -1,0 +1,79 @@
+@extends('plantillas.principal')
+@section('titulo', 'Panel principal | River Mall')
+@section('encabezado', 'Resumen general')
+
+@section('contenido')
+<div class="page-heading d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Panel principal</h1>
+        <p class="text-muted mb-0">Bienvenido al sistema de gestión de la Cooperativa River Mall.</p>
+    </div>
+    <span class="badge text-bg-light p-2">
+        <i class="bi bi-calendar3 me-1"></i> {{ now()->format('d/m/Y') }}
+    </span>
+</div>
+
+<div class="row g-4 mb-4">
+@foreach([
+    ['Socios', $totalSocios, 'bi-people-fill', 'primary', 'socios.index'],
+    ['Conductores', $totalConductores, 'bi-person-vcard-fill', 'success', 'conductores.index'],
+    ['Taxis', $totalTaxis, 'bi-taxi-front-fill', 'warning', 'taxis.index'],
+    ['Clientes', $totalClientes, 'bi-person-hearts', 'info', 'clientes.index'],
+    ['Servicios', $totalServicios, 'bi-geo-alt-fill', 'danger', 'servicios.index'],
+    ['Recaudación', '$ '.number_format($totalPagos, 2), 'bi-cash-coin', 'dark', 'pagos.index']
+] as [$titulo, $valor, $icono, $color, $ruta])
+    <div class="col-sm-6 col-xl-4">
+        <a href="{{ route($ruta) }}" class="text-decoration-none">
+            <div class="card stat-card h-100">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
+                    <div>
+                        <div class="text-muted mb-1">{{ $titulo }}</div>
+                        <div class="h3 mb-0 text-dark">{{ $valor }}</div>
+                    </div>
+                    <div class="stat-icon bg-{{ $color }} bg-opacity-10 text-{{ $color }}">
+                        <i class="bi {{ $icono }}"></i>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+@endforeach
+</div>
+
+<div class="card">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <strong><i class="bi bi-clock-history me-2"></i>Servicios recientes</strong>
+        <a href="{{ route('servicios.index') }}" class="small text-decoration-none">Ver todos</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Ruta</th>
+                    <th>Taxi</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($ultimosServicios as $servicio)
+                    <tr>
+                        <td>{{ optional($servicio->fecha)->format('d/m/Y') }}</td>
+                        <td>{{ $servicio->cliente?->nombres }} {{ $servicio->cliente?->apellidos }}</td>
+                        <td>{{ $servicio->origen }} → {{ $servicio->destino }}</td>
+                        <td>{{ $servicio->taxi?->placa }}</td>
+                        <td><span class="badge text-bg-secondary">{{ $servicio->estado }}</span></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            Todavía no hay servicios registrados.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+@endsection

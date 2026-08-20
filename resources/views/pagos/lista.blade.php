@@ -1,0 +1,10 @@
+@extends('plantillas.principal')
+@section('titulo','Pagos | River Mall') @section('encabezado','Gestión de pagos')
+@section('contenido')
+<div class="page-heading d-flex flex-wrap justify-content-between gap-3 mb-4"><div><h1 class="h3 mb-1">Pagos</h1><p class="mb-0">Control económico de los servicios realizados.</p></div><a class="btn btn-primary align-self-center" href="{{ route('pagos.create') }}"><i class="bi bi-plus-lg me-1"></i> Nuevo pago</a></div>
+<div class="card"><div class="card-body p-4">@include('componentes.buscador',['placeholder'=>'Buscar por cliente o método de pago','opcionesOrden'=>['fecha_pago'=>'Fecha de pago','created_at'=>'Más recientes','monto'=>'Monto','metodo_pago'=>'Método']])
+<div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Fecha</th><th>Servicio</th><th>Cliente</th><th>Método</th><th>Monto</th><th class="text-end">Acciones</th></tr></thead><tbody>
+@forelse($pagos as $pago)<tr><td>{{ optional($pago->fecha_pago)->format('d/m/Y') }}</td><td><strong>#{{ $pago->servicio_id }}</strong><small class="d-block text-muted">{{ $pago->servicio?->origen }} → {{ $pago->servicio?->destino }}</small></td><td>{{ $pago->servicio?->cliente?->nombres }} {{ $pago->servicio?->cliente?->apellidos }}</td><td><span class="badge text-bg-light">{{ $pago->metodo_pago }}</span></td><td><strong class="text-success">${{ number_format($pago->monto,2) }}</strong></td><td class="text-end text-nowrap"><a class="btn btn-sm btn-light" href="{{ route('pagos.edit',$pago) }}"><i class="bi bi-pencil-square"></i></a> <form class="d-inline" method="POST" action="{{ route('pagos.destroy',$pago) }}" data-confirmar-eliminar>@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash3"></i></button></form></td></tr>
+@empty<tr><td colspan="6" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-2 d-block mb-2"></i>No existen pagos registrados.</td></tr>@endforelse
+</tbody></table></div><div class="d-flex justify-content-end">{{ $pagos->links() }}</div></div></div>
+@endsection
